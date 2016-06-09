@@ -1,5 +1,7 @@
 library(shiny)
 library(dplyr)
+library(stringi)
+library(tidyr)
 
 shinyServer(function(input, output, session) {
 
@@ -43,6 +45,15 @@ shinyServer(function(input, output, session) {
 	}
 	})
 
+	data_t1 <- reactive({
+	inFile1 <- input$file2
+	if (is.null(inFile1)){
+    	return(data.frame())
+    	} else {
+	data_t1<-read.table(inFile1$datapath, fileEncoding="UTF-16LE",sep="\t",fill=T,header = TRUE)
+	}
+	})
+
 	output$out3 <- renderPrint(input$input)
 
 	output$table <- DT::renderDataTable(DT::datatable({
@@ -61,4 +72,17 @@ shinyServer(function(input, output, session) {
     data
   }))
 
+	output$table1 <- DT::renderDataTable(DT::datatable({
+    data1 <- data_t1()
+    if (!is.null(input$input)) {
+     	data1$num <- stri_count_regex(data1$소스.매체, "/")
+		data1 <- subset(data1, num>0)
+		data1 <- data1 %>% separate(소스.매체, c("소스", "media"), " / ")
+		data1 <- filter(data1, media %in% input$input)
+		data1$사용자 <- as.numeric(gsub("\\W", "", data1[,c('사용자')]))
+		names(data1)[3]<-'user'
+		data1 <- data1 %>% summarise(user=sum(user))
+    }
+    data1
+  }))
 })
