@@ -3,29 +3,6 @@ library(dplyr)
 
 shinyServer(function(input, output, session) {
 
-#	output$contents <- renderTable({
-#	inFile1 <- input$file1
-#	if (is.null(inFile1)){
-#    	return(data.frame())
-#    	} else {
-#	data<-read.table(inFile1$datapath, fileEncoding="UTF-16LE",sep="\t",fill=T,header = TRUE)
-#	data<-data[complete.cases(data[,1:ncol(data)]),]
-#    data
-#	}
-#	})
-
-#	data <- reactive({
-#	inFile1 <- input$file1
-#	if (is.null(inFile1)){
-#    	return(data.frame())
-#    	} else {
-#	data<-read.table(inFile1$datapath, fileEncoding="UTF-16LE",sep="\t",fill=T,header = TRUE)
-#	data<-data[complete.cases(data[,1:ncol(data)]),]
-#    name<-unique(as.character(data$광고.콘텐츠))
-#    name
-#	}
-#	})	
-
 	list_c <- reactive({
 	inFile2 <- input$file2
 	if (is.null(inFile2)){
@@ -36,13 +13,6 @@ shinyServer(function(input, output, session) {
   list
 	}
 	})	
-
-#	observe({
-#		updateSelectInput(
-#		session,
-#		"input",
-#		choices=data())
-#	})
 
 	data_t <- reactive({
 	inFile1 <- input$file1
@@ -55,25 +25,6 @@ shinyServer(function(input, output, session) {
   data
 	}
 	})
-
-#	output$out3 <- renderPrint(input$input)
-
-#	output$table1 <- DT::renderDataTable(DT::datatable({
-#    data <- data_t()
-#    if (!is.null(input$input)) {
-#      data <- filter(data, 광고.콘텐츠 %in% input$input) # data[data[1] == input$input,]
-#      data$순.구매수<-as.numeric(gsub("\\W", "", data[,c('순.구매수')]))
-#      data$거래수<-as.numeric(gsub("\\W", "", data[,c('거래수')]))
-#      data$수익<-as.numeric(gsub("\\W", "", data[,c('수익')]))
-#      data$세션<-as.numeric(gsub("\\W", "", data[,c('세션')]))
-#      data$새로운.세션..<-as.numeric(gsub("\\W", "", data[,c('새로운.세션..')]))/10000
-#      data$이탈률<-as.numeric(gsub("\\W", "", data[,c('이탈률')]))/10000
-#      data$bounce.num<-with(data, 세션*이탈률)
-#      data$new.num<-with(data, 세션*새로운.세션..)
-#      data <- data %>% summarise(순구매수=sum(순.구매수),거래수=sum(거래수),수익=sum(수익),세션=sum(세션),회원가입=sum(회원가입..목표.4.완료.수.),새로운.세션=sum(new.num)/sum(세션),이탈률=sum(bounce.num)/sum(세션))
-#    }
-#    data
-#  }))
 
 	output$table2 <- DT::renderDataTable(DT::datatable({
     data_t2 <- data_t()
