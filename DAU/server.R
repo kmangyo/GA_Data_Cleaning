@@ -51,6 +51,7 @@ shinyServer(function(input, output, session) {
     	return(data.frame())
     	} else {
 	data_t1<-read.table(inFile1$datapath, fileEncoding="UTF-16LE",sep="\t",fill=T,header = TRUE)
+	data_t1<-data_t1[,c('소스.매체','사용자')]
 	}
 	})
 
